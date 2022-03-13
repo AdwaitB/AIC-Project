@@ -7,9 +7,12 @@ from handlers import *
 from consts import *
 
 apiTypeMappings = {
-    "PING":     ping,
-    "INIT":     init,
-    "CONFIG":   configUpdate
+    PING:         ping,
+    INIT:         init,
+    VOTE:         vote,
+    MASTERSELECT: masterSelect,
+    CONFIG:       configUpdate,
+    SHUTDOWN:     shutdown
 }
 
 app = Flask(__name__)

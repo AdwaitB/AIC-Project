@@ -3,6 +3,13 @@ PORT = "PORT"
 # Request statuses
 TYPE = "TYPE"
 
+PING = "PING"
+INIT = "INIT"
+VOTE = "VOTE"
+SHUTDOWN = "SHUTDOWN"
+CONFIG = "CONFIG"
+MASTERSELECT = "MASTERSELECT"
+
 PONG = "PONG"
 
 STATUS = "STATUS"
@@ -14,3 +21,8 @@ ISMASTER = "isMaster"
 SCANSET = "scanSet"
 
 CONFIG = "CONFIG"
+PEERS = "peers"
+
+# Voting
+MYVOTE = "MYVOTE"
+NEWMASTER = "NEWMASTER"
