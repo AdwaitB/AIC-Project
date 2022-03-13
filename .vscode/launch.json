@@ -5,13 +5,21 @@
     "version": "0.2.0",
     "configurations": [
         {
-            "name": "start service",
+            "name": "Python: Flask",
             "type": "python",
             "request": "launch",
-            "program": "service/service.py",
-            "console": "integratedTerminal",
-            "justMyCode": true,
-            "args": ["-p", "12001"]
+            "module": "flask",
+            "env": {
+                "FLASK_APP": "service/service.py",
+                "FLASK_ENV": "development"
+            },
+            "args": [
+                "run",
+                "--no-debugger",
+                "-p", "12001"
+            ],
+            "jinja": true,
+            "justMyCode": true
         }
     ]
 }
