@@ -10,10 +10,10 @@ class Config:
         for key in dir(self):
             if key.startswith("__") or key.startswith("_"):
                 continue
-            else:
-                attr = getattr(self, key)
-                if not callable(attr):
-                    retDict[key] = getattr(self, key)
+        
+            attr = getattr(self, key)
+            if not callable(attr):
+                retDict[key] = getattr(self, key)
         
         return retDict
 
