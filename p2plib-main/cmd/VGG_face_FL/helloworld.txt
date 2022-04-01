@@ -1,0 +1,155 @@
+listening on 130.127.133.26:8000
+client wake_up: 
+client ready for training
+client_ready out
+client wake_up: 
+client ready for training
+client_ready out
+client ready for training
+start : 2022-02-02 18:19:39.690504
+### Round 0###
+request updates to ['c32c9eb4-81d1-482f-bdc2-6889aab87b0d', 'e21a70ad-0a37-4429-81f8-138ac37311f3']
+handle client_updatec32c9eb4-81d1-482f-bdc2-6889aab87b0d
+handle client_updatee21a70ad-0a37-4429-81f8-138ac37311f3
+aggr_train_loss0.027867572020283705
+aggr_train_accuracy1.0
+### Round 1###
+request updates to ['e21a70ad-0a37-4429-81f8-138ac37311f3', 'c32c9eb4-81d1-482f-bdc2-6889aab87b0d']
+handle client_updatec32c9eb4-81d1-482f-bdc2-6889aab87b0d
+handle client_updatee21a70ad-0a37-4429-81f8-138ac37311f3
+aggr_train_loss0.027785209711078257
+aggr_train_accuracy1.0
+### Round 2###
+request updates to ['c32c9eb4-81d1-482f-bdc2-6889aab87b0d', 'e21a70ad-0a37-4429-81f8-138ac37311f3']
+aggr_train_loss0
+aggr_train_accuracy0
+### Round 3###
+request updates to ['e21a70ad-0a37-4429-81f8-138ac37311f3', 'c32c9eb4-81d1-482f-bdc2-6889aab87b0d']
+handle client_updatec32c9eb4-81d1-482f-bdc2-6889aab87b0d
+handle client_updatee21a70ad-0a37-4429-81f8-138ac37311f3
+aggr_train_lossnan
+aggr_train_accuracy1.0
+### Round 4###
+request updates to ['c32c9eb4-81d1-482f-bdc2-6889aab87b0d', 'e21a70ad-0a37-4429-81f8-138ac37311f3']
+handle client_updatec32c9eb4-81d1-482f-bdc2-6889aab87b0d
+handle client_updatee21a70ad-0a37-4429-81f8-138ac37311f3
+handle client_updatec32c9eb4-81d1-482f-bdc2-6889aab87b0d
+handle client_updatee21a70ad-0a37-4429-81f8-138ac37311f3
+aggr_train_lossnan
+aggr_train_accuracy1.0
+### Round 5###
+request updates to ['c32c9eb4-81d1-482f-bdc2-6889aab87b0d', 'e21a70ad-0a37-4429-81f8-138ac37311f3']
+handle client_updatee21a70ad-0a37-4429-81f8-138ac37311f3
+handle client_updatec32c9eb4-81d1-482f-bdc2-6889aab87b0d
+aggr_train_lossnan
+aggr_train_accuracy1.0
+### Round 6###
+request updates to ['e21a70ad-0a37-4429-81f8-138ac37311f3', 'c32c9eb4-81d1-482f-bdc2-6889aab87b0d']
+aggr_train_loss0
+aggr_train_accuracy0
+### Round 7###
+request updates to ['e21a70ad-0a37-4429-81f8-138ac37311f3', 'c32c9eb4-81d1-482f-bdc2-6889aab87b0d']
+handle client_updatec32c9eb4-81d1-482f-bdc2-6889aab87b0d
+handle client_updatee21a70ad-0a37-4429-81f8-138ac37311f3
+aggr_train_lossnan
+aggr_train_accuracy1.0
+### Round 8###
+request updates to ['e21a70ad-0a37-4429-81f8-138ac37311f3', 'c32c9eb4-81d1-482f-bdc2-6889aab87b0d']
+handle client_updatec32c9eb4-81d1-482f-bdc2-6889aab87b0d
+handle client_updatee21a70ad-0a37-4429-81f8-138ac37311f3
+handle client_updatec32c9eb4-81d1-482f-bdc2-6889aab87b0d
+handle client_updatee21a70ad-0a37-4429-81f8-138ac37311f3
+aggr_train_lossnan
+aggr_train_accuracy1.0
+### Round 9###
+request updates to ['e21a70ad-0a37-4429-81f8-138ac37311f3', 'c32c9eb4-81d1-482f-bdc2-6889aab87b0d']
+handle client_updatee21a70ad-0a37-4429-81f8-138ac37311f3
+handle client_updatec32c9eb4-81d1-482f-bdc2-6889aab87b0d
+aggr_train_lossnan
+aggr_train_accuracy1.0
+### Round 10###
+request updates to ['e21a70ad-0a37-4429-81f8-138ac37311f3', 'c32c9eb4-81d1-482f-bdc2-6889aab87b0d']
+aggr_train_loss0
+aggr_train_accuracy0
+### Round 11###
+request updates to ['e21a70ad-0a37-4429-81f8-138ac37311f3', 'c32c9eb4-81d1-482f-bdc2-6889aab87b0d']
+handle client_updatee21a70ad-0a37-4429-81f8-138ac37311f3
+handle client_updatec32c9eb4-81d1-482f-bdc2-6889aab87b0d
+aggr_train_lossnan
+aggr_train_accuracy1.0
+### Round 12###
+request updates to ['c32c9eb4-81d1-482f-bdc2-6889aab87b0d', 'e21a70ad-0a37-4429-81f8-138ac37311f3']
+handle client_updatec32c9eb4-81d1-482f-bdc2-6889aab87b0d
+handle client_updatee21a70ad-0a37-4429-81f8-138ac37311f3
+handle client_updatec32c9eb4-81d1-482f-bdc2-6889aab87b0d
+handle client_updatee21a70ad-0a37-4429-81f8-138ac37311f3
+aggr_train_lossnan
+aggr_train_accuracy1.0
+### Round 13###
+request updates to ['e21a70ad-0a37-4429-81f8-138ac37311f3', 'c32c9eb4-81d1-482f-bdc2-6889aab87b0d']
+handle client_updatec32c9eb4-81d1-482f-bdc2-6889aab87b0d
+handle client_updatee21a70ad-0a37-4429-81f8-138ac37311f3
+aggr_train_lossnan
+aggr_train_accuracy1.0
+### Round 14###
+request updates to ['c32c9eb4-81d1-482f-bdc2-6889aab87b0d', 'e21a70ad-0a37-4429-81f8-138ac37311f3']
+aggr_train_loss0
+aggr_train_accuracy0
+### Round 15###
+request updates to ['e21a70ad-0a37-4429-81f8-138ac37311f3', 'c32c9eb4-81d1-482f-bdc2-6889aab87b0d']
+handle client_updatee21a70ad-0a37-4429-81f8-138ac37311f3
+handle client_updatec32c9eb4-81d1-482f-bdc2-6889aab87b0d
+aggr_train_lossnan
+aggr_train_accuracy1.0
+### Round 16###
+request updates to ['e21a70ad-0a37-4429-81f8-138ac37311f3', 'c32c9eb4-81d1-482f-bdc2-6889aab87b0d']
+handle client_updatee21a70ad-0a37-4429-81f8-138ac37311f3
+handle client_updatec32c9eb4-81d1-482f-bdc2-6889aab87b0d
+handle client_updatec32c9eb4-81d1-482f-bdc2-6889aab87b0d
+handle client_updatee21a70ad-0a37-4429-81f8-138ac37311f3
+aggr_train_lossnan
+aggr_train_accuracy1.0
+### Round 17###
+request updates to ['e21a70ad-0a37-4429-81f8-138ac37311f3', 'c32c9eb4-81d1-482f-bdc2-6889aab87b0d']
+handle client_updatec32c9eb4-81d1-482f-bdc2-6889aab87b0d
+handle client_updatee21a70ad-0a37-4429-81f8-138ac37311f3
+aggr_train_lossnan
+aggr_train_accuracy1.0
+aggr_train_lossnan
+aggr_train_accuracy1.0
+### Round 19###
+request updates to ['e21a70ad-0a37-4429-81f8-138ac37311f3', 'c32c9eb4-81d1-482f-bdc2-6889aab87b0d']
+### Round 19###
+request updates to ['c32c9eb4-81d1-482f-bdc2-6889aab87b0d', 'e21a70ad-0a37-4429-81f8-138ac37311f3']
+handle client_updatee21a70ad-0a37-4429-81f8-138ac37311f3
+handle client_updatee21a70ad-0a37-4429-81f8-138ac37311f3
+handle client_updatec32c9eb4-81d1-482f-bdc2-6889aab87b0d
+handle client_updatec32c9eb4-81d1-482f-bdc2-6889aab87b0d
+aggr_train_lossnan
+aggr_train_accuracy1.0
+### Round 20###
+request updates to ['e21a70ad-0a37-4429-81f8-138ac37311f3', 'c32c9eb4-81d1-482f-bdc2-6889aab87b0d']
+aggr_train_loss0
+aggr_train_accuracy0
+### Round 21###
+request updates to ['e21a70ad-0a37-4429-81f8-138ac37311f3', 'c32c9eb4-81d1-482f-bdc2-6889aab87b0d']
+aggr_train_loss0
+aggr_train_accuracy0
+### Round 22###
+request updates to ['e21a70ad-0a37-4429-81f8-138ac37311f3', 'c32c9eb4-81d1-482f-bdc2-6889aab87b0d']
+handle client_updatec32c9eb4-81d1-482f-bdc2-6889aab87b0d
+handle client_updatee21a70ad-0a37-4429-81f8-138ac37311f3
+handle client_updatec32c9eb4-81d1-482f-bdc2-6889aab87b0d
+handle client_updatec32c9eb4-81d1-482f-bdc2-6889aab87b0d
+handle client_updatee21a70ad-0a37-4429-81f8-138ac37311f3
+handle client_updatee21a70ad-0a37-4429-81f8-138ac37311f3
+aggr_train_lossnan
+aggr_train_accuracy1.0
+### Round 23###
+request updates to ['c32c9eb4-81d1-482f-bdc2-6889aab87b0d', 'e21a70ad-0a37-4429-81f8-138ac37311f3']
+aggr_train_loss0
+aggr_train_accuracy0
+### Round 24###
+request updates to ['c32c9eb4-81d1-482f-bdc2-6889aab87b0d', 'e21a70ad-0a37-4429-81f8-138ac37311f3']
+handle client_updatec32c9eb4-81d1-482f-bdc2-6889aab87b0d
+handle client_updatec32c9eb4-81d1-482f-bdc2-6889aab87b0d
