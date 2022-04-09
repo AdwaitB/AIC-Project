@@ -17,13 +17,13 @@ import pandas as pd
 
 #output.to_csv("../../Path_with_labels.csv",index=False)
 levels = ['Normal', 'COVID']
-path = "./COVID-19_Radiography_Dataset"
+path = "./COVID-19_Radiography_Dataset/"
 data_dir = os.path.join(path)
 
 data = []
 for id, level in enumerate(levels):
-    for file in os.listdir(os.path.join(data_dir , level)):
-        data.append(['{}/{}'.format(level, file), level])
+    for file in os.listdir(os.path.join(data_dir , level+ '/images/')):
+        data.append(['{}/images/{}'.format(level, file), level])
 
 data = pd.DataFrame(data, columns = ['image_file', 'corona_result'])
 
