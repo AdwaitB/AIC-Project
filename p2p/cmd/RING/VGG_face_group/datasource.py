@@ -10,6 +10,8 @@ import tensorflow as tf
 from keras.datasets import mnist
 from keras import backend as K
 from keras.preprocessing.image import ImageDataGenerator
+from sklearn.model_selection import train_test_split
+import cv2
 #import tensorflow_datasets as tfds
 
 class DataSource(object):
@@ -21,7 +23,7 @@ class DataSource(object):
         raise NotImplementedError()
 
 class VggFace2(DataSource):
-    data_dir = './vgg_face2'
+    data_dir = './COVID-19_Radiography_Dataset'
 
     def padding(self, array, xx, yy):
         """
@@ -53,29 +55,41 @@ class VggFace2(DataSource):
         lab = randrange(6)+1
         #print("label randomly chosen")
         #print(lab)
-        data = np.loadtxt(f'./Path_with_labels{lab}.csv', dtype='str', delimiter=',')
-        data = data[1:-1,:]
+        data = np.loadtxt(f'./Path_with_labels.csv', dtype='str', delimiter=',')
+        data = data[1:,:]
+        data = pd.DataFrame(data, columns=['image_file', 'corona_result','path'])
+        all_data = []
+
+        # Storing images and their labels into a list for further Train Test split
+
+        for i in range(len(data)):
+            image = cv2.imread(data['path'][i])
+            image = cv2.resize(image, (70, 70)) / 255.0
+            label = 1 if data['corona_result'][i] == "Positive" else 0
+            all_data.append([image, label])
+        all_data = pd.DataFrame(all_data, columns=['image', 'label'])
+        #print(all_data)
         # data = pd.read_csv("./Path_with_labels.csv")
 
-        train_datagen = ImageDataGenerator()
+        #train_datagen = ImageDataGenerator()
 
         random.seed(2021)
-        random_file = random.choice(os.listdir(self.data_dir))
+        #random_file = random.choice(os.listdir(self.data_dir))
         #print(random_file)
         
         #tmp = str(random.random())
         #path = os.path.join(self.data_dir, tmp)
-        classpath = os.path.join(self.data_dir, random_file)
-        path = classpath
+        #classpath = os.path.join(self.data_dir, random_file)
+        #path = classpath
         #print()
         #print(classpath)
-        img_height = 224
-        img_width = 224
-        batch_size = 10
+        #img_height = 224
+        #img_width = 224
+        #batch_size = 10
         #shutil.copytree(self.data_dir + "/" + random_file, classpath)
         #print("printing old path")
         #print(path)
-        path = './vgg_face2/n000838/'
+        #path = './vgg_face2/n000838/'
         
         # train_data = tf.keras.utils.image_dataset_from_directory(
         #     path,
@@ -84,39 +98,24 @@ class VggFace2(DataSource):
         #     seed=123,
         #     image_size=(img_height, img_width),
         #     batch_size=batch_size)
-        train_data = []
-        test_data = []
-        valid_data = []
-        from sklearn.model_selection import train_test_split
-        import cv2
-        train, test = train_test_split(data, test_size = 0.3, random_state = 1)
-        valid, test = train_test_split(test, test_size = 0.5, random_state = 1)
+        #train_data = []
+        #test_data = []
+        #valid_data = []
+
+        #train, test = train_test_split(data, test_size = 0.3, random_state = 1)
+        #valid, test = train_test_split(test, test_size = 0.5, random_state = 1)
+        test = all_data.sample(frac=0.3)
+        all_data = all_data.sample(frac=0.2) #randomly sample 20% for each peer
+
+        train, validate = all_data.sample(frac=0.8), all_data.sample(frac=0.2)
+
 
         #print(train)
         #print(type(train[1,0]))
         #print(train[1,0])
         # print(os.listdir(train[1,0]))
         
-        for filepath in train[1:,0]:
-            #print(f"filepath is {filepath}")
-            nparr = cv2.imread(filepath)
-            #print(nparr.shape)
-            #print(type(nparr))
-            # nparr = cv2.cvtColor(nparr, cv2.COLOR_BGR2GRAY)
-            if nparr.shape[0] <= 300 and nparr.shape[1] <=300:
-                train_data.append(self.padding(nparr,300,300))
-            
-        for filepath in valid[1:,0]:
-            nparr = cv2.imread(filepath)
-            # nparr = cv2.cvtColor(nparr, cv2.COLOR_BGR2GRAY)
-            if nparr.shape[0] <= 300 and nparr.shape[1] <=300:
-                valid_data.append(self.padding(nparr,300,300))
 
-        for filepath in test[1:,0]:
-            nparr = cv2.imread(filepath)
-            # nparr = cv2.cvtColor(nparr, cv2.COLOR_BGR2GRAY)
-            if nparr.shape[0] <= 300 and nparr.shape[1] <=300:
-                test_data.append(self.padding(nparr,300,300))
 
         #print(type(train_data[0]))
 
@@ -155,10 +154,9 @@ class VggFace2(DataSource):
         #print(test_data.shape)
         #print(labels_test.shape)
         # shutil.rmtree(path)
-        self.x_train = train_data
-        #self.y_train = labels_train
-        self.x_test = test_data
-        self.x_valid = valid_data
+        self.train = train
+        self.test = test
+        self.valid = validate
         #self.y_train = labels_test
 
     def fake_non_iid_data(self, min_train=100, max_train=1000, data_split=(.6,.3,.1)): 
@@ -178,7 +176,7 @@ class VggFace2(DataSource):
         #valid_set = [self.sample_single_non_iid(self.x_valid, self.y_valid, my_class_distr) for _ in range(valid_size)]
         #print("done generating fake data")
 
-        return ((self.x_train, self.x_test, self.x_valid), [1])
+        return ((self.train, self.test, self.valid), [1])
         # return ((np.stack(list(self.x_train)), np.stack(list(self.x_test)), np.stack(list(self.x_test))), [1]) 
         # return ((tfds.as_numpy(self.x_train), tfds.as_numpy(self.x_test), tfds.as_numpy(self.x_test)), [1]) 
     

@@ -66,6 +66,8 @@ class LocalModel(object):
         self.valid_losses = []
         self.train_accuracies = []
         self.valid_accuracies = []
+        self.test_losses = []
+        self.test_accuracies = []
 
         self.model_config = model_config
         self.model_id = model_config['model_id']
@@ -81,22 +83,41 @@ class LocalModel(object):
         self.li[self.client_no] = 1
 
         train_data, test_data, valid_data = data_collected
+        self.x_train = train_data['image']
+        self.y_train = train_data['label']
+        self.x_train = np.array(self.x_train)
+        self.y_train = np.array(self.y_train)
+        self.x_train = np.stack(self.x_train, axis=0)
+
+        self.x_valid = valid_data['image']
+        self.y_valid = valid_data['label']
+        self.x_valid = np.array(self.x_valid)
+        self.y_valid = np.array(self.y_valid)
+        self.x_valid = np.stack(self.x_valid, axis=0)
+
+        self.x_test = test_data['image']
+        self.y_test = test_data['label']
+        self.x_test = np.array(self.x_test)
+        self.y_test = np.array(self.y_test)
+        self.x_test = np.stack(self.x_test, axis=0)
+
         print("data collected")
         print((train_data[0]).shape)
         # print(train_data.size)
         # print(test_data.size)
         # print(valid_data.size)
-        self.x_train = []
+        #self.x_train = []
         # for iter,tup in enumerate(train_data):
         #     self.x_train.append(tup)
         # print(f"round {iter}")
         # self.x_train = np.array(self.x_train)
-        self.x_train = np.array([tup for tup in train_data])
-        self.y_train = np.array([self.li for tup in train_data])
-        self.x_test = np.array([tup for tup in test_data])
-        self.y_test = np.array([self.li for tup in test_data])
-        self.x_valid = np.array([tup for tup in valid_data])
-        self.y_valid = np.array([self.li for tup in valid_data])
+
+        #self.x_train = np.array([tup for tup in train_data])
+        #self.y_train = np.array([self.li for tup in train_data])
+        #self.x_test = np.array([tup for tup in test_data])
+        #self.y_test = np.array([self.li for tup in test_data])
+        #self.x_valid = np.array([tup for tup in valid_data])
+        #self.y_valid = np.array([self.li for tup in valid_data])
 
         print(self.x_train.shape)
         print(self.y_train.shape)
@@ -232,8 +253,10 @@ class LocalModel(object):
         return {
             "train_loss": self.train_losses,
             "valid_loss": self.valid_losses,
+            "test_loss": self.test_losses,
             "train_accuracy": self.train_accuracies,
-            "valid_accuracy": self.valid_accuracies
+            "valid_accuracy": self.valid_accuracies,
+            "test_accuracy": self.test_accuracies
         }
 
 class FederatedClient(object):
@@ -889,6 +912,8 @@ if __name__ == "__main__":
     filehandle.write("running client \n")
     filehandle.close()
     import datasource
+
+
 
     # for debug
     client = FederatedClient(sys.argv[1], sys.argv[2], sys.argv[3], datasource.VggFace2)
