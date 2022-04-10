@@ -182,6 +182,7 @@ class VggFace2(DataSource):
     
 if __name__ == "__main__":
     m = VggFace2()
+    print(m)
     # res = m.partitioned_by_rows(9)
     # print(res["test"][1].shape)
     #for _ in range(10):

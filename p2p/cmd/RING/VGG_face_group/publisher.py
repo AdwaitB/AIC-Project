@@ -146,56 +146,61 @@ class GlobalModel_VGG(GlobalModel):
         from keras.models import Model
         import tensorflow as tf
         import keras
-
+        from tensorflow.keras import layers, models
         # IMAGE_WIDTH, IMAGE_HEIGHT = (224, 224)
 
-        image_shape = (300,300,3)
-        base_model = VGG16(
-            input_shape=image_shape,
-            include_top=False,
-            #weights='imagenet'
-            weights=None
-        )
+        # image_shape = (300,300,3)
+        # base_model = VGG16(
+        #     input_shape=image_shape,
+        #     include_top=False,
+        #     #weights='imagenet'
+        #     weights=None
+        # )
 
-        # Freeze four convolution blocks
-        #for layer in base_model.layers[:15]:
-        #    layer.trainable = False
-
-        for layer in base_model.layers:
-            layer.trainable = True
+        # for layer in base_model.layers:
+        #     layer.trainable = True
  
-        # Make sure you have frozen the correct layers
-        for i, layer in enumerate(base_model.layers):
-            print(i, layer.name, layer.trainable)
+        # # Make sure you have frozen the correct layers
+        # for i, layer in enumerate(base_model.layers):
+        #     print(i, layer.name, layer.trainable)
 
-        #n_labels = 2 # bc we are starting with this but there are actually 500. obsolete
+        # inputs = Input(image_shape)
+        # x = base_model(inputs)
 
-        inputs = Input(image_shape)
-        x = base_model(inputs)
+        # from keras.layers import Dropout
+        # #x = base_model.output
+        # x = Flatten()(x) # Flatten dimensions to for use in FC layers
+        # x = Dense(512, activation='relu')(x)
+        # x = Dropout(0.5)(x) # Dropout layer to reduce overfitting
+        # x = Dense(256, activation='relu')(x)
+        # x = Dense(2, activation='softmax')(x) # Softmax for multiclass
+        # model = Model(inputs=inputs, outputs=x)
 
-        #x = tf.keras.layers.GlobalAveragePooling2D()(x)
-        #output = tf.keras.layers.Dense(2, activation='softmax', name='dense_logits2',kernel_initializer='random_normal',bias_initializer='zeros')(x)
-        #opt = tf.keras.optimizers.Adam(learning_rate=0.00001)
-        #model = Model(inputs= inputs, outputs=output)
-        # model.summary()
-        # model.compile(loss=keras.losses.categorical_crossentropy,
-        #             optimizer=opt,
-        #             metrics=['accuracy'])
+        # from tensorflow.keras import layers, models, Model, optimizers
+        # learning_rate= 5e-5
+        # model.compile(loss="categorical_crossentropy", optimizer=optimizers.Adam(lr=learning_rate), metrics=["accuracy"])
 
-        from keras.layers import Dropout
-        #x = base_model.output
-        x = Flatten()(x) # Flatten dimensions to for use in FC layers
-        x = Dense(512, activation='relu')(x)
-        x = Dropout(0.5)(x) # Dropout layer to reduce overfitting
-        x = Dense(256, activation='relu')(x)
-        x = Dense(2, activation='softmax')(x) # Softmax for multiclass
-        model = Model(inputs=inputs, outputs=x)
+        cnn_model = models.Sequential()
+        cnn_model.add(layers.Conv2D(filters = 128, kernel_size = (3, 3), activation = 'relu', input_shape = (70, 70, 3)))
+        cnn_model.add(layers.MaxPooling2D((2, 2)))
+        cnn_model.add(layers.Dropout(0.3))
 
-        from tensorflow.keras import layers, models, Model, optimizers
-        learning_rate= 5e-5
-        model.compile(loss="categorical_crossentropy", optimizer=optimizers.Adam(lr=learning_rate), metrics=["accuracy"])
+        cnn_model.add(layers.Conv2D(filters = 64, kernel_size = (3, 3), activation = 'relu'))
+        cnn_model.add(layers.MaxPooling2D((2, 2)))
+        cnn_model.add(layers.Dropout(0.5))
 
-        return model
+        cnn_model.add(layers.Conv2D(filters = 64, kernel_size = (3, 3), activation = 'relu'))
+        cnn_model.add(layers.Flatten())
+        cnn_model.add(layers.Dense(units = 16, activation = 'relu'))
+        cnn_model.add(layers.Dropout(0.2))
+
+        cnn_model.add(layers.Dense(units = 2))
+
+        cnn_model.compile(optimizer = 'adam', 
+              loss = tf.keras.losses.SparseCategoricalCrossentropy(from_logits = True), 
+              metrics = ['accuracy'])
+
+        return cnn_model
         
 # Federated Averaging algorithm with the server pulling from clients
 

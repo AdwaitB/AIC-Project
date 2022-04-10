@@ -102,7 +102,7 @@ class LocalModel(object):
         self.x_test = np.stack(self.x_test, axis=0)
 
         print("data collected")
-        print((train_data[0]).shape)
+        # print((train_data[0]).shape)
         # print(train_data.size)
         # print(test_data.size)
         # print(valid_data.size)
@@ -139,11 +139,15 @@ class LocalModel(object):
 
     # return final weights, train loss, train accuracy
     def train_one_round(self):
-        import tensorflow.keras as keras
-        opt = keras.optimizers.Adam(learning_rate=0.000001)
-        self.model.compile(loss=keras.losses.categorical_crossentropy,
-            optimizer=opt,
-            metrics=['accuracy'])
+        # import tensorflow.keras as keras
+        # opt = keras.optimizers.Adam(learning_rate=0.000001)
+        # self.model.compile(loss=keras.losses.categorical_crossentropy,
+        #     optimizer=opt,
+        #     metrics=['accuracy'])
+        import tensorflow as tf
+        self.model.compile(optimizer = 'adam', 
+              loss = tf.keras.losses.SparseCategoricalCrossentropy(from_logits = True), 
+              metrics = ['accuracy'])
 
         # print(self.x_valid)
         # print(self.y_valid)
@@ -172,15 +176,15 @@ class LocalModel(object):
         x = np.roll(self.x_train, 8, axis=0)
         y = np.roll(self.y_train, 8, axis=0)
 
-        from keras.callbacks import ReduceLROnPlateau
-        lr_reduce = ReduceLROnPlateau(monitor='val_accuracy', factor=0.6, patience=8, verbose=1, mode='max', min_lr=5e-5)
+        # from keras.callbacks import ReduceLROnPlateau
+        # lr_reduce = ReduceLROnPlateau(monitor='val_accuracy', factor=0.6, patience=8, verbose=1, mode='max', min_lr=5e-5)
 
-
+        es = tf.keras.callbacks.EarlyStopping(monitor = 'val_loss', mode = 'min', verbose = 1, patience = 4)
         self.model.fit(self.x_train[0:8], self.y_train[0:8],
                 epochs=1,
-                batch_size=2,
+                batch_size=64,
                 verbose=1,
-                validation_data=(self.x_valid[0:20], self.y_valid[0:20]),callbacks=[csv_logger,lr_reduce])
+                validation_data=(self.x_valid[0:20], self.y_valid[0:20]),callbacks=[csv_logger,es])
 
         score = self.model.evaluate(self.x_valid[0:20], self.y_valid[0:20], verbose=1)
         csv_file = open(f"csv_file{self.client_no}.csv", 'a')
@@ -261,7 +265,7 @@ class LocalModel(object):
 
 class FederatedClient(object):
     MIN_NUM_WORKERS = 0 #total from this branch. This will be set by grouping protocol during grouping
-    MAX_NUM_ROUNDS = 1
+    MAX_NUM_ROUNDS = 5
     ROUNDS_BETWEEN_VALIDATIONS = 2
     MAX_DATASET_SIZE_KEPT = 1200
     #def __init__(self, host, port, bootaddr, datasource):
