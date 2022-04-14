@@ -49,9 +49,10 @@ class VggFace2(DataSource):
 
         return np.stack([l1, l2, l3],axis=2) 
 
-    def __init__(self):
+    def __init__(self, peerId):
         # from numpy import genfromtxt
         #lab = randrange(4)+1
+        self.peerId = int(peerId)
         lab = randrange(6)+1
         #print("label randomly chosen")
         #print(lab)
@@ -105,7 +106,8 @@ class VggFace2(DataSource):
         #train, test = train_test_split(data, test_size = 0.3, random_state = 1)
         #valid, test = train_test_split(test, test_size = 0.5, random_state = 1)
         test = all_data.sample(frac=0.3)
-        all_data = all_data.sample(frac=0.2) #randomly sample 20% for each peer
+        # all_data = all_data.sample(frac=0.2) #randomly sample 20% for each peer
+        all_data = all_data[(self.peerId-1):self.peerId] #randomly sample 20% for each peer
 
         train, validate = all_data.sample(frac=0.8), all_data.sample(frac=0.2)
 
