@@ -24,8 +24,7 @@ class DataSource(object):
 
 class VggFace2(DataSource):
     data_dir = './COVID-19_Radiography_Dataset'
-    def __init__(self, peerId):
-        self.peerId = peerId
+
     def padding(self, array, xx, yy):
         """
         :param array: numpy array
@@ -42,7 +41,7 @@ class VggFace2(DataSource):
         aa = xx - a - h
 
         b = (yy - w) // 2
-        bb = yy - b - waic
+        bb = yy - b - w
         
         l1 = np.pad(array[:,:,0], pad_width=((a, aa), (b, bb)), mode='constant')
         l2 = np.pad(array[:,:,1], pad_width=((a, aa), (b, bb)), mode='constant')
@@ -50,9 +49,10 @@ class VggFace2(DataSource):
 
         return np.stack([l1, l2, l3],axis=2) 
 
-    def __init__(self):
+    def __init__(self, peerId):
         # from numpy import genfromtxt
         #lab = randrange(4)+1
+        self.peerId = int(peerId)
         lab = randrange(6)+1
         #print("label randomly chosen")
         #print(lab)
