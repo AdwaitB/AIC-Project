@@ -1,51 +1,14 @@
-import numpy as np
-import pandas as pd
-import keras
-from keras.utils import np_utils
-import random
-from random import randrange
-import os
-import shutil
-import tensorflow as tf
-from keras.datasets import mnist
-from keras import backend as K
-from keras.preprocessing.image import ImageDataGenerator
-from sklearn.model_selection import train_test_split
-import cv2
 
-### import packages
-import pandas as pd
-import numpy as np
-import matplotlib.pyplot as plt
-from sklearn import preprocessing
-import seaborn as sns
 
-from sklearn.model_selection import train_test_split, ShuffleSplit, learning_curve, GridSearchCV, KFold, StratifiedKFold
-from sklearn.linear_model import LogisticRegression, Perceptron
-from sklearn.metrics import roc_curve, accuracy_score, confusion_matrix, classification_report, roc_auc_score, \
-    make_scorer, precision_recall_curve, average_precision_score
-from sklearn.svm import SVC
-from sklearn.preprocessing import StandardScaler
-from sklearn.model_selection import cross_val_score, cross_val_predict
-from sklearn import metrics
 
-from sklearn.ensemble import RandomForestClassifier, IsolationForest, VotingClassifier
-from sklearn.neural_network import MLPClassifier
 
 
 import random
 
 LABELS = ["Normal", "Fraud"]
-
-# Grad-CAM
-
 import pandas as pd
 import numpy as np
-import matplotlib.pyplot as plt
-from sklearn import preprocessing
-import seaborn as sns
-from tensorflow import keras
-from tensorflow.keras import layers, models
+
 
 
 # import tensorflow_datasets as tfds
@@ -232,8 +195,9 @@ class VggFace2(DataSource):
                      'BeneID_count', 'ClaimID_count',
                      'Provider', 'target']]
         #print(df)
-        test = df.sample(frac=0.3)
-        all_data = df.sample(frac=0.2)
+        all_data = df.drop(['Provider'], axis=1)
+        test = all_data.sample(frac=0.3)
+        all_data = all_data.sample(frac=0.2)
         train, validate = all_data.sample(frac=0.8), all_data.sample(frac=0.2)
 
         self.train = train
