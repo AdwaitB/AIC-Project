@@ -24,7 +24,8 @@ class DataSource(object):
 
 class VggFace2(DataSource):
     data_dir = './COVID-19_Radiography_Dataset'
-
+    def __init__(self, peerId):
+        self.peerId = peerId
     def padding(self, array, xx, yy):
         """
         :param array: numpy array
@@ -41,7 +42,7 @@ class VggFace2(DataSource):
         aa = xx - a - h
 
         b = (yy - w) // 2
-        bb = yy - b - w
+        bb = yy - b - waic
         
         l1 = np.pad(array[:,:,0], pad_width=((a, aa), (b, bb)), mode='constant')
         l2 = np.pad(array[:,:,1], pad_width=((a, aa), (b, bb)), mode='constant')
@@ -105,7 +106,8 @@ class VggFace2(DataSource):
         #train, test = train_test_split(data, test_size = 0.3, random_state = 1)
         #valid, test = train_test_split(test, test_size = 0.5, random_state = 1)
         test = all_data.sample(frac=0.3)
-        all_data = all_data.sample(frac=0.2) #randomly sample 20% for each peer
+        # all_data = all_data.sample(frac=0.2) #randomly sample 20% for each peer
+        all_data = all_data[(self.peerId-1):self.peerId] #randomly sample 20% for each peer
 
         train, validate = all_data.sample(frac=0.8), all_data.sample(frac=0.2)
 
