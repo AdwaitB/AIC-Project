@@ -146,7 +146,7 @@ class LocalModel(object):
         #     metrics=['accuracy'])
         import tensorflow as tf
         self.model.compile(optimizer = 'adam', 
-              loss = tf.keras.losses.SparseCategoricalCrossentropy(from_logits = True), 
+              loss = 'binary_crossentropy', 
               metrics = ['accuracy'])
 
         # print(self.x_valid)
@@ -180,12 +180,14 @@ class LocalModel(object):
         # lr_reduce = ReduceLROnPlateau(monitor='val_accuracy', factor=0.6, patience=8, verbose=1, mode='max', min_lr=5e-5)
 
         es = tf.keras.callbacks.EarlyStopping(monitor = 'val_loss', mode = 'min', verbose = 1, patience = 4)
+        if os.path.isfile('model_weights_' + str(self.peerId) + '.h5'):
+            self.model.load_weights('model_weights_' + str(self.peerId) + '.h5')
         self.model.fit(self.x_train[0:8], self.y_train[0:8],
-                epochs=1,
-                batch_size=64,
+                epochs=3,
+                batch_size=256,
                 verbose=1,
                 validation_data=(self.x_valid[0:20], self.y_valid[0:20]),callbacks=[csv_logger,es])
-
+        self.model.save_weights('model_weights_' + str(self.peerId) + '.h5')
         score = self.model.evaluate(self.x_valid[0:20], self.y_valid[0:20], verbose=1)
         csv_file = open(f"csv_file{self.client_no}.csv", 'a')
         csv_file.write(f"o{score[1]}"+'\n')
@@ -265,7 +267,7 @@ class LocalModel(object):
 
 class FederatedClient(object):
     MIN_NUM_WORKERS = 0 #total from this branch. This will be set by grouping protocol during grouping
-    MAX_NUM_ROUNDS = 5
+    MAX_NUM_ROUNDS = 100
     ROUNDS_BETWEEN_VALIDATIONS = 2
     MAX_DATASET_SIZE_KEPT = 1200
     #def __init__(self, host, port, bootaddr, datasource):
@@ -273,6 +275,7 @@ class FederatedClient(object):
         self.local_model = None
 
         self.datasource = datasource((int(port)%9000))
+        self.peerId = int(port)%9000
        
         self.current_round = 0
         self.current_round_client_updates = []

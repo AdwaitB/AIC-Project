@@ -106,8 +106,8 @@ class VggFace2(DataSource):
         #train, test = train_test_split(data, test_size = 0.3, random_state = 1)
         #valid, test = train_test_split(test, test_size = 0.5, random_state = 1)
         test = all_data.sample(frac=0.3)
-        # all_data = all_data.sample(frac=0.2) #randomly sample 20% for each peer
-        all_data = all_data[(self.peerId-1):self.peerId] #randomly sample 20% for each peer
+        all_data = all_data.sample(frac=0.2) #randomly sample 20% for each peer
+        # all_data = all_data[int(((self.peerId-1)/8.)*len(all_data)):int(((self.peerId)/8.)*len(all_data))] #randomly sample 20% for each peer
 
         train, validate = all_data.sample(frac=0.8), all_data.sample(frac=0.2)
 
