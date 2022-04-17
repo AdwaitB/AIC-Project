@@ -194,7 +194,7 @@ class GlobalModel_VGG(GlobalModel):
         cnn_model.add(layers.Dense(units = 16, activation = 'relu'))
         cnn_model.add(layers.Dropout(0.2))
 
-        cnn_model.add(layers.Dense(units = 2))
+        cnn_model.add(layers.Dense(units = 2, activation='sigmoid'))
 
         cnn_model.compile(optimizer = 'adam', 
               loss = tf.keras.losses.SparseCategoricalCrossentropy(from_logits = True), 
