@@ -48,7 +48,7 @@ def pickle_string_to_obj(s):
     return pickle.loads(base64.b64decode(s, '-_'))
 
 class LocalModel(object):
-    def __init__(self, model_config, data_collected):
+    def __init__(self, model_config, data_collected, peerId):
         # model_config:
             # 'model': self.local_model.model.to_json(),
             # 'model_id'
@@ -59,7 +59,7 @@ class LocalModel(object):
 
         # for convergence check
         self.prev_train_loss = None
-
+        self.peerId = peerId
         # all rounds; losses[i] = [round#, timestamp, loss]
         # round# could be None if not applicable
         self.train_losses = []
@@ -317,7 +317,7 @@ class FederatedClient(object):
                 #storeData("fake_data",fake_data)
                 #storeData("my_class_distr",my_class_distr)
 
-            self.local_model = LocalModel(model_config, fake_data)
+            self.local_model = LocalModel(model_config, fake_data, self.peerId)
 
             self.lib.IncreaseNumClientReady()
             
@@ -338,7 +338,7 @@ class FederatedClient(object):
                 #storeData("fake_data",fake_data)
                 #storeData("my_class_distr",my_class_distr)
 
-            self.local_model = LocalModel(model_config, fake_data)
+            self.local_model = LocalModel(model_config, fake_data, self.peerId)
 
             print("send client_ready to upper leader\n")
             self.lib.Report_GR(None, 0, OP_CLIENT_READY, 1)
@@ -362,7 +362,7 @@ class FederatedClient(object):
                 #storeData("fake_data",fake_data)
                 #storeData("my_class_distr",my_class_distr)
 
-            self.local_model = LocalModel(model_config, fake_data)
+            self.local_model = LocalModel(model_config, fake_data, self.peerId)
 
             self.lib.IncreaseNumClientReady()
 
