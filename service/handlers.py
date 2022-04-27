@@ -11,6 +11,8 @@ import cv2
 
 import tensorflow as tf
 from tensorflow.keras.models import load_model
+from tensorflow.keras import layers, models
+from keras.preprocessing import image
 
 from consts import *
 
@@ -44,13 +46,15 @@ def uploadImage(json={}, app=None):
 
 def predict(json={}, app=None):
     model = load_model("./service/covid_model.h5", compile=True)
+    # model = get_covid_model()
     filename = json[FILENAME]
     image = cv2.imread("./service/images/" + filename)
 
     if image is not None:
         json[STATUS] = SUCCESS
-        image = np.array(cv2.resize(image, (70, 70)) / 255.0)
-        json[PREDICTION] = np.argmax(model.predict([image]), axis=1)
+        image = np.array([cv2.resize(image, (70, 70)) / 255.0])
+        json[PREDICTION] = int(np.argmax(model.predict(image), axis=1)[0])
+        print(json[PREDICTION])
     
     return json
 
