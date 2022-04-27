@@ -2,6 +2,7 @@ import argparse
 import copy
 
 from flask import Flask, request
+from flask_cors import CORS
 
 from handlers import *
 from consts import *
@@ -12,10 +13,14 @@ apiTypeMappings = {
     VOTE:         vote,
     MASTERSELECT: masterSelect,
     CONFIG:       configUpdate,
-    SHUTDOWN:     shutdown
+    SHUTDOWN:     shutdown,
+    UPLOADIMAGE:  uploadImage,
+    PREDICT:      predict
 }
 
 app = Flask(__name__)
+app.config["IMAGE_UPLOADS"] = "./tmp/"
+CORS(app)
 
 @app.route('/', methods=['POST'])
 def post_():
@@ -26,7 +31,7 @@ def post_():
 
     requestCopy = copy.deepcopy(request.json)
     requestCopy[STATUS] = FAILURE
-    return apiTypeMappings[requestCopy[TYPE]](requestCopy)
+    return apiTypeMappings[requestCopy[TYPE]](requestCopy, app)
 
 @app.route('/', methods=['GET'])
 def get_():

@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Upload Image</title>
+</head>
+<body>
+    <IfModule mod_headers.c>
+        Header set Access-Control-Allow-Origin "*"
+    </IfModule>
+    <div class="container"><div class="row"><div class="col">
+
+    <h1>Upload Image</h1><hr>
+
+    <button id="post-btn">I'm a button</button>
+
+    <form action="http://127.0.0.1:12000/upload" method="POST" enctype="multipart/form-data">
+        <div class="form-group">
+            <label>Select image</label>
+            <div class="custom-file">
+                <input type="file" class="custom-file-input" name="image" id="image">
+                <label class="custom-file-label" for="image">Select image...</label>
+            </div>
+        </div>
+        <button type="submit" class="btn btn-primary">Upload</button>
+    </form>
+
+    </div></div></div>
+
+    <img src="{{ uploaded_image }}">
+
+    <script>
+        // header("Access-Control-Allow-Origin: *");
+        const button = document.getElementById('post-btn');
+
+        button.addEventListener('click', async _ => {
+            try {     
+                console.log('Test!');
+                const response = await fetch('http://127.0.0.1:12000/', {
+                method: 'post',
+                headers: {
+                    'Content-Type': 'application/json'
+                // 'Content-Type': 'application/x-www-form-urlencoded',
+                },
+                body: {
+                    "TYPE": "PING"
+                }
+                });
+                console.log('Completed!', response);
+            } catch(err) {
+                console.error(`Error: ${err}`);
+            }
+        });
+    </script>
+</body>
+</html>
