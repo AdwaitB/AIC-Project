@@ -48,7 +48,7 @@ def pickle_string_to_obj(s):
     return pickle.loads(base64.b64decode(s, '-_'))
 
 class LocalModel(object):
-    def __init__(self, model_config, data_collected):
+    def __init__(self, model_config, data_collected, peerId):
         # model_config:
             # 'model': self.local_model.model.to_json(),
             # 'model_id'
@@ -59,7 +59,7 @@ class LocalModel(object):
 
         # for convergence check
         self.prev_train_loss = None
-
+        self.peerId = peerId
         # all rounds; losses[i] = [round#, timestamp, loss]
         # round# could be None if not applicable
         self.train_losses = []
@@ -136,17 +136,19 @@ class LocalModel(object):
 
     def set_weights(self, new_weights):
         self.model.set_weights(new_weights)
+        self.model.save_weights('model_weights.h5')
+
 
     # return final weights, train loss, train accuracy
     def train_one_round(self):
-        # import tensorflow.keras as keras
+        import tensorflow.keras as keras
         # opt = keras.optimizers.Adam(learning_rate=0.000001)
         # self.model.compile(loss=keras.losses.categorical_crossentropy,
         #     optimizer=opt,
         #     metrics=['accuracy'])
         import tensorflow as tf
-        self.model.compile(optimizer = 'adam', 
-              loss = 'binary_crossentropy', 
+        self.model.compile(optimizer = keras.optimizers.Adam(learning_rate=0.001), 
+              loss = tf.keras.losses.SparseCategoricalCrossentropy(from_logits = True), 
               metrics = ['accuracy'])
 
         # print(self.x_valid)
@@ -162,7 +164,7 @@ class LocalModel(object):
         print("x n y train")
 
         self.model.summary()
-        score = self.model.evaluate(self.x_valid[0:20], self.y_valid[0:20], verbose=1)
+        score = self.model.evaluate(self.x_valid, self.y_valid, verbose=1)
         print('Train loss before training:', score[0])
         print('Train accuracy before training:', score[1])
         csv_file = open(f"csv_file{self.client_no}.csv", 'a')
@@ -180,15 +182,20 @@ class LocalModel(object):
         # lr_reduce = ReduceLROnPlateau(monitor='val_accuracy', factor=0.6, patience=8, verbose=1, mode='max', min_lr=5e-5)
 
         es = tf.keras.callbacks.EarlyStopping(monitor = 'val_loss', mode = 'min', verbose = 1, patience = 4)
-        if os.path.isfile('model_weights_' + str(self.peerId) + '.h5'):
-            self.model.load_weights('model_weights_' + str(self.peerId) + '.h5')
-        self.model.fit(self.x_train[0:8], self.y_train[0:8],
-                epochs=3,
+        # if os.path.isfile('model_weights.h5'):
+        #     self.model.load_weights('model_weights.h5')
+        self.model.compile(optimizer = 'sgd', 
+              loss = tf.keras.losses.SparseCategoricalCrossentropy(from_logits = True), 
+              metrics = ['accuracy'])
+
+        tf.random.set_seed(42)
+        self.model.fit(self.x_train, self.y_train,
+                epochs=10,
                 batch_size=256,
                 verbose=1,
-                validation_data=(self.x_valid[0:20], self.y_valid[0:20]),callbacks=[csv_logger,es])
-        self.model.save_weights('model_weights_' + str(self.peerId) + '.h5')
-        score = self.model.evaluate(self.x_valid[0:20], self.y_valid[0:20], verbose=1)
+                shuffle=True,
+                validation_data=(self.x_valid, self.y_valid),callbacks=[csv_logger,es])
+        score = self.model.evaluate(self.x_valid, self.y_valid, verbose=1)
         csv_file = open(f"csv_file{self.client_no}.csv", 'a')
         csv_file.write(f"o{score[1]}"+'\n')
         csv_file.close()
@@ -317,7 +324,7 @@ class FederatedClient(object):
                 #storeData("fake_data",fake_data)
                 #storeData("my_class_distr",my_class_distr)
 
-            self.local_model = LocalModel(model_config, fake_data)
+            self.local_model = LocalModel(model_config, fake_data, self.peerId)
 
             self.lib.IncreaseNumClientReady()
             
@@ -338,7 +345,7 @@ class FederatedClient(object):
                 #storeData("fake_data",fake_data)
                 #storeData("my_class_distr",my_class_distr)
 
-            self.local_model = LocalModel(model_config, fake_data)
+            self.local_model = LocalModel(model_config, fake_data, self.peerId)
 
             print("send client_ready to upper leader\n")
             self.lib.Report_GR(None, 0, OP_CLIENT_READY, 1)
@@ -362,7 +369,7 @@ class FederatedClient(object):
                 #storeData("fake_data",fake_data)
                 #storeData("my_class_distr",my_class_distr)
 
-            self.local_model = LocalModel(model_config, fake_data)
+            self.local_model = LocalModel(model_config, fake_data, self.peerId)
 
             self.lib.IncreaseNumClientReady()
 

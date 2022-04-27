@@ -920,7 +920,7 @@ if __name__ == "__main__":
     filehandle = open("run.log", "w")
     filehandle.write("running client \n")
     filehandle.close()
-    import datasource
+    import datasource_copy as datasource
 
     # for debug
     client = FederatedClient(sys.argv[1], sys.argv[2], sys.argv[3], datasource.VggFace2)
